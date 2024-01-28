@@ -134,6 +134,10 @@ def run(*,
     # NOTE: We save host and port in environment variables so the subprocess started in reload mode can access them.
     os.environ['NICEGUI_HOST'] = host
     os.environ['NICEGUI_PORT'] = str(port)
+    if "ssl_keyfile" in kwargs:
+        os.environ['NICEGUI_PROTOCOL'] = 'https'
+    else:
+        os.environ['NICEGUI_PROTOCOL'] = 'http'
 
     if show:
         helpers.schedule_browser(host, port)

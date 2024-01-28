@@ -17,11 +17,12 @@ async def collect_urls() -> None:
     """Print a welcome message with URLs to access the NiceGUI app."""
     host = os.environ.get('NICEGUI_HOST')
     port = os.environ.get('NICEGUI_PORT')
+    protocol = os.environ.get('NICEGUI_PROTOCOL')
     if not host or not port:
         return
     ips = set((await run.io_bound(_get_all_ips)) if host == '0.0.0.0' else [])
     ips.discard('127.0.0.1')
-    urls = [(f'http://{ip}:{port}' if port != '80' else f'http://{ip}') for ip in ['localhost'] + sorted(ips)]
+    urls = [(f'{protocol}://{ip}:{port}' if port != '80' else f'{protocol}://{ip}') for ip in ['localhost'] + sorted(ips)]
     core.app.urls.update(urls)
     if len(urls) >= 2:
         urls[-1] = 'and ' + urls[-1]
